@@ -15,10 +15,10 @@ const approvePR = async () => {
   const issueNumber = match ? match[1] : null;
   // 1. 첫 번째 이슈 클릭
   (await waitForElement(`#issue_${issueNumber} > div > a`)).click();
-  // 2. Add your review 클릭
+  // 2. Files changed 클릭
   (
     await waitForElement(
-      "#repo-content-turbo-frame > div > div.flex-items-center.flash.flash-warn.width-full.mb-3.p-2.d-flex > a"
+      "#repo-content-turbo-frame > div > div.clearfix.js-issues-results > div.px-3.px-md-0.ml-n3.mr-n3.mx-md-0.tabnav > nav > a:nth-child(4)"
     )
   ).click();
   // 3. Review changes 클릭
