@@ -8,4 +8,12 @@ reloadOnUpdate("pages/background");
  */
 reloadOnUpdate("pages/content/style.scss");
 
-console.log("background loaded");
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.message === "GET_PR_LIST") {
+    sendResponse({ received: true });
+    return true;
+  }
+  sendResponse({
+    received: true,
+  });
+});

@@ -34,10 +34,12 @@ const manifest: chrome.runtime.ManifestV3 = {
         "assets/css/*.css",
         "icon-128.png",
         "icon-34.png",
+        "fetchPRList.iife.js",
       ],
-      matches: ["*://*/*"],
+      matches: ["*://*.github.com/*"],
     },
   ],
+  permissions: ["storage", "activeTab", "scripting"],
 };
 
 export default manifest;

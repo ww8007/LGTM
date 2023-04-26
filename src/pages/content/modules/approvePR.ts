@@ -7,12 +7,7 @@ const waitForElement = async (selector) => {
   return document.querySelector(selector);
 };
 
-const approvePR = async () => {
-  const anchorElem = await waitForElement(".markdown-title");
-  const hrefValue = anchorElem.getAttribute("href");
-  const regex = /\/pull\/(\d+)/;
-  const match = hrefValue.match(regex);
-  const issueNumber = match ? match[1] : null;
+const approvePR = async (issueNumber: number) => {
   // 1. 첫 번째 이슈 클릭
   (await waitForElement(`#issue_${issueNumber} > div > a`)).click();
   // 2. Files changed 클릭
