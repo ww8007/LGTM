@@ -14,7 +14,6 @@
     <label><input type="checkbox" name="2" value="2" checked> 버튼 하나 두고 눌렀을 때 approve 전까지 플로우 테스트</label>
     <img width="300" src='https://user-images.githubusercontent.com/54137044/234615989-cbf77a48-8771-4ca7-a689-51c643813c9e.png'>
   </ul>
-  </div>
 </details>
 
 
@@ -32,7 +31,6 @@
     </label>
     <img width="300" src='https://user-images.githubusercontent.com/54137044/234611145-ece693a9-6d6e-4039-ae96-2589fb795c07.png'>
   </ul>
-  </div>
 </details>
   
 
