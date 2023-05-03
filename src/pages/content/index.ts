@@ -23,18 +23,22 @@ const fetchPRListFromPage = async (): Promise<
 };
 
 if (window.location.hostname === "github.com") {
-  chrome.runtime.onMessage.addListener(async (request) => {
+  chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
+    if (request.message === "READY") {
+      sendResponse({ code: 200, data: true });
+      return true;
+    }
     if (request.message === "GET_PR_LIST") {
-      const prList = await fetchPRListFromPage();
-      chrome.runtime.sendMessage({
-        code: 200,
-        message: "PR_LIST",
-        data: prList,
-      });
+      (async () => {
+        if (request.message === "GET_PR_LIST") {
+          const prList = await fetchPRListFromPage();
+          sendResponse({ code: 200, data: prList });
+        }
+      })();
       return true;
     }
     if (request.message === "APPROVE_PR") {
-      await approvePR(request.data.issueNumber);
+      approvePR(request.data.issueNumber);
       chrome.runtime.sendMessage({ code: 200, message: "APPROVED" });
     }
     return true;
