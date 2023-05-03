@@ -4,17 +4,43 @@ import { appStyles } from "./styles/popup.css";
 const Popup = () => {
   const [prList, setPRList] = useState<PullRequestItem[]>([]);
 
-  chrome.runtime.onMessage.addListener((res) => {
-    if (res.message === "PR_LIST") {
-      setPRList(res.data);
-    }
+  const checkIfReceiverIsReady = (
+    tabId: number,
+    callback: (isReady: boolean) => void
+  ) => {
+    chrome.tabs.sendMessage(tabId, { message: "READY" }, (response) => {
+      if (chrome.runtime.lastError) {
+        setTimeout(() => checkIfReceiverIsReady(tabId, callback), 1000);
+      } else {
+        callback(response.data);
+      }
+    });
+  };
 
-    return true;
-  });
+  const getPRList = (
+    tabId: number,
+    callback: (data: PullRequestItem[]) => void
+  ) => {
+    chrome.tabs.sendMessage(tabId, { message: "GET_PR_LIST" }, (response) => {
+      if (chrome.runtime.lastError) {
+        setTimeout(() => getPRList(tabId, callback), 1000);
+      } else {
+        callback(response.data);
+      }
+    });
+  };
 
   useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { message: "GET_PR_LIST" });
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      checkIfReceiverIsReady(tabs[0].id, (isReady) => {
+        if (isReady) {
+          getPRList(tabs[0].id, (data) => {
+            setPRList(data);
+          });
+        } else {
+          console.error("Error: Receiving end does not exist");
+        }
+      });
     });
   }, []);
 
