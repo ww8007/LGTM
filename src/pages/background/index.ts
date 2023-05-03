@@ -13,7 +13,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     sendResponse({ received: true });
     return true;
   }
-  sendResponse({
-    received: true,
-  });
+  if (request.message === "APPROVE_PR") {
+    sendResponse({ received: true });
+    return true;
+  }
+  if (request.message === "READY") {
+    sendResponse({ received: true });
+    return true;
+  }
 });
